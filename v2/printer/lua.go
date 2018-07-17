@@ -90,6 +90,10 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 		// 遍历每一列
 		for rootFieldIndex, node := range r.Nodes {
 
+			if !node.MatchTag(".lua") {
+				continue
+			}
+
 			if node.IsRepeated {
 				stream.Printf("%s = { ", node.Name)
 			} else {

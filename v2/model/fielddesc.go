@@ -242,3 +242,13 @@ func init() {
 	}
 
 }
+
+func (self *FieldDescriptor) MatchTag(tag string) bool {
+
+	if !self.Meta.ContainKey("OutputTag") {
+		return true
+	}
+
+	return self.Meta.ContainValue("OutputTag", tag)
+
+}

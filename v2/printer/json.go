@@ -67,6 +67,10 @@ func printTableJson(bf *Stream, tab *model.Table) bool {
 		// 遍历每一列
 		for rootFieldIndex, node := range r.Nodes {
 
+			if !node.MatchTag(".json") {
+				continue
+			}
+
 			if node.SugguestIgnore {
 				continue
 			}

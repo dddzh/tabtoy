@@ -129,6 +129,10 @@ func (self *protoPrinter) Run(g *Globals) *Stream {
 		// 遍历字段
 		for index, fd := range d.Fields {
 
+			if !fd.MatchTag(".proto") {
+				continue
+			}
+
 			// 对CombineStruct的XXDefine对应的字段
 			if d.Usage == model.DescriptorUsage_CombineStruct {
 

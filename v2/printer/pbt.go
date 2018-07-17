@@ -56,6 +56,10 @@ func printTablePBT(bf *Stream, tab *model.Table) bool {
 		// 遍历每一列
 		for rootFieldIndex, node := range r.Nodes {
 
+			if !node.MatchTag(".pbt") {
+				continue
+			}
+
 			if node.IsRepeated {
 				bf.Printf("%s:[ ", node.Name)
 			} else {
