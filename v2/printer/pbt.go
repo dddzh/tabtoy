@@ -60,6 +60,10 @@ func printTablePBT(bf *Stream, tab *model.Table) bool {
 				continue
 			}
 
+			if node.SugguestIgnore {
+				continue
+			}
+
 			if node.IsRepeated {
 				bf.Printf("%s:[ ", node.Name)
 			} else {

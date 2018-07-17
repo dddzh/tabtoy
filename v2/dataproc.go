@@ -20,6 +20,7 @@ func coloumnProcessor(file model.GlobalChecker, record *model.Record, fd *model.
 
 		if fd.Type != model.FieldType_Struct {
 			node = record.NewNodeByDefine(fd)
+			node.SugguestIgnore = sugguestIgnore
 		}
 
 		for _, v := range valueList {

@@ -94,6 +94,10 @@ func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 				continue
 			}
 
+			if node.SugguestIgnore {
+				continue
+			}
+
 			if node.IsRepeated {
 				stream.Printf("%s = { ", node.Name)
 			} else {

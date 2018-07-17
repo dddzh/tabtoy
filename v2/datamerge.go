@@ -54,15 +54,15 @@ func mergeValues(modelData *model.DataModel, tab *model.Table, checker model.Glo
 						}
 
 					} else {
-						// 重复的普通字段导出, 做占位
-
+						// 重复的普通字段建议不导出
+						sugguestIgnore = true
 					}
 
 				} else {
 
 					if fv.FieldDef.Type == model.FieldType_Struct {
 
-						// 不重复的 结构体字段, 且结构体字段没有默认值, 整个不导出
+						// 不重复的 结构体字段, 且结构体字段没有默认值, 整个建议不导出
 						if !structFieldHasDefaultValue(fv.FieldDef) {
 
 							sugguestIgnore = true
@@ -70,7 +70,7 @@ func mergeValues(modelData *model.DataModel, tab *model.Table, checker model.Glo
 
 					} else {
 
-						// 非重复的普通字段不导出
+						// 非重复的普通字段建议不导出
 						sugguestIgnore = true
 					}
 
