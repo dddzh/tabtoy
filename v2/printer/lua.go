@@ -79,7 +79,7 @@ func (self *luaPrinter) Run(g *Globals) *Stream {
 
 func printTableLua(g *Globals, stream *Stream, tab *model.Table) bool {
 
-	stream.Printf("	%s = {\n", tab.LocalFD.Name)
+	stream.Printf("	%s = {\n", tab.Name())
 
 	// 遍历每一行
 	for rIndex, r := range tab.Recs {

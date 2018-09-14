@@ -120,7 +120,7 @@ func (self *Globals) AddContent(tab *model.Table) bool {
 
 	localFD := tab.LocalFD
 
-	if _, ok := self.tableByName[localFD.Name]; ok {
+	if _, ok := self.tableByName[tab.Name()]; ok {
 
 		log.Errorf("%s, '%s'", i18n.String(i18n.Globals_TableNameDuplicated), localFD.Name)
 		return false
@@ -129,21 +129,21 @@ func (self *Globals) AddContent(tab *model.Table) bool {
 	// 表的全局类型信息与合并信息一致
 	tab.GlobalFD = self.FileDescriptor
 
-	self.tableByName[localFD.Name] = tab
+	self.tableByName[tab.Name()] = tab
 	self.Tables = append(self.Tables, tab)
 
 	// 每个表在结构体里的字段
 	rowFD := model.NewFieldDescriptor()
-	rowFD.Name = localFD.Name
+	rowFD.Name = tab.Name()
 	rowFD.Type = model.FieldType_Struct
-	rowFD.Complex = localFD.RowDescriptor()
+	rowFD.Complex = localFD.RowDescriptor2(tab.Name())
 	rowFD.IsRepeated = true
 	rowFD.Order = int32(len(self.CombineStruct.Fields) + 1)
-	rowFD.Comment = localFD.Name
+	rowFD.Comment = tab.Name()
 	self.CombineStruct.Add(rowFD)
 
-	if localFD.RowDescriptor() == nil {
-		panic("row field null:" + localFD.Name)
+	if localFD.RowDescriptor2(tab.Name()) == nil {
+		panic("row field null:" + tab.Name())
 	}
 
 	for _, d := range localFD.Descriptors {

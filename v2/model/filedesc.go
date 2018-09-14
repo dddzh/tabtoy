@@ -29,6 +29,17 @@ func (self *FileDescriptor) RowDescriptor() *Descriptor {
 
 	return nil
 }
+func (self *FileDescriptor) RowDescriptor2(tabName string) *Descriptor {
+
+	dName := tabName+"Define"
+	for _, d := range self.Descriptors {
+		if d.Usage == DescriptorUsage_RowType && d.Name == dName {
+			return d
+		}
+	}
+
+	return nil
+}
 
 func (self *FileDescriptor) Add(def *Descriptor) bool {
 

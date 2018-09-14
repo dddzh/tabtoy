@@ -135,6 +135,34 @@ func (self *File) ExportData(dataModel *model.DataModel, parentHeader *DataHeade
 
 }
 
+// ExportData2 导出数据到table，一个excel文件中每个sheet分别导出各自table
+func (self *File) ExportData2(parentHeader *DataHeader) ([]*model.DataModel, []string, bool) {
+
+	var dms []*model.DataModel
+	var names []string
+	for index, d := range self.dataSheets {
+
+		dataModel := model.NewDataModel()
+
+		log.Infof("            %s", d.Name)
+
+		parentHeader = self.dataHeaders[index]
+
+		if !d.Export(self, dataModel, self.dataHeaders[index], parentHeader) {
+			return nil, nil, false
+		}
+
+		dms = append(dms, dataModel)
+		if index == 0 {
+			names = append(names, self.LocalFD.Name)
+		} else {
+			names = append(names, d.Name)
+		}
+	}
+
+	return dms, names, true
+}
+
 func (self *File) CheckValueRepeat(fd *model.FieldDescriptor, value string) bool {
 
 	key := valueRepeatData{

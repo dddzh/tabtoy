@@ -46,7 +46,7 @@ func printTablePBT(bf *Stream, tab *model.Table) bool {
 		return true
 	}
 
-	bf.Printf("%s: [\n", tab.LocalFD.Name)
+	bf.Printf("%s: [\n", tab.Name())
 
 	// 遍历每一行
 	for recIndex, r := range tab.Recs {

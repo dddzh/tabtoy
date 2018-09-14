@@ -39,6 +39,7 @@ type DataHeader struct {
 func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.FileDescriptor, globalFD *model.FileDescriptor) bool {
 
 	verticalHeader := localFD.Pragma.GetBool("Vertical")
+	var rowName string
 
 	// 适用于配置的表格
 	if verticalHeader {
@@ -94,10 +95,13 @@ func (self *DataHeader) ParseProtoField(index int, sheet *Sheet, localFD *model.
 	}
 
 	if index == 0 {
-		// 添加第一个数据表的定义
-		if !self.makeRowDescriptor(localFD, self.headerFields) {
-			goto ErrorStop
-		}
+		rowName = fmt.Sprintf("%sDefine", localFD.Pragma.GetString("TableName"))
+	} else {
+		rowName = fmt.Sprintf("%sDefine", sheet.Name)
+	}
+	// 添加第一个数据表的定义
+	if !self.makeRowDescriptor(localFD, self.headerFields, rowName) {
+		goto ErrorStop
 	}
 
 	return true
@@ -214,11 +218,11 @@ func (self *DataHeader) addHeaderElement(he *DataHeaderElement, localFD *model.F
 	return -1
 }
 
-func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField []*model.FieldDescriptor) bool {
+func (self *DataHeader) makeRowDescriptor(fileD *model.FileDescriptor, rootField []*model.FieldDescriptor, rowName string) bool {
 
 	rowType := model.NewDescriptor()
 	rowType.Usage = model.DescriptorUsage_RowType
-	rowType.Name = fmt.Sprintf("%sDefine", fileD.Pragma.GetString("TableName"))
+	rowType.Name = rowName //fmt.Sprintf("%sDefine", fileD.Pragma.GetString("TableName"))
 	rowType.Kind = model.DescriptorKind_Struct
 
 	// 类型已经存在, 说明是自己定义的 XXDefine, 不允许

@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/davyxu/tabtoy/v2/i18n"
-	"github.com/davyxu/tabtoy/v2/model"
 	"github.com/davyxu/tabtoy/v2/printer"
+	"github.com/davyxu/tabtoy/v2/model"
 )
 
 func Run(g *printer.Globals) bool {
@@ -79,43 +79,70 @@ func Run(g *printer.Globals) bool {
 	}
 
 	log.Infof("==========%s==========", i18n.String(i18n.Run_ExportSheetData))
-
+	//for _, file := range fileObjList {
+	//
+	//	log.Infoln(filepath.Base(file.FileName))
+	//
+	//	dataModel := model.NewDataModel()
+	//
+	//	tab := model.NewTable()
+	//	tab.LocalFD = file.LocalFD
+	//
+	//	// 主表
+	//	if !file.ExportData(dataModel, nil) {
+	//		return false
+	//	}
+	//
+	//	// 子表提供数据
+	//	for _, mergeFile := range file.mergeList {
+	//
+	//		log.Infoln(filepath.Base(mergeFile.FileName), "--->", filepath.Base(file.FileName))
+	//
+	//		// 电子表格数据导出到Table对象
+	//		if !mergeFile.ExportData(dataModel, file.Header) {
+	//			return false
+	//		}
+	//	}
+	//
+	//	// 合并所有值到node节点
+	//	if !mergeValues(dataModel, tab, file) {
+	//		return false
+	//	}
+	//
+	//	// 整合类型信息和数据
+	//	if !g.AddContent(tab) {
+	//		return false
+	//	}
+	//
+	//}
 	for _, file := range fileObjList {
 
 		log.Infoln(filepath.Base(file.FileName))
 
-		dataModel := model.NewDataModel()
-
-		tab := model.NewTable()
-		tab.LocalFD = file.LocalFD
-
 		// 主表
-		if !file.ExportData(dataModel, nil) {
+		dataModels, names, ok := file.ExportData2(nil)
+		if !ok {
 			return false
 		}
 
-		// 子表提供数据
-		for _, mergeFile := range file.mergeList {
+		for i,dataModel := range dataModels {
+			tab := model.NewTable()
+			tab.LocalFD = file.LocalFD
+			tab.SetName(names[i])
 
-			log.Infoln(filepath.Base(mergeFile.FileName), "--->", filepath.Base(file.FileName))
+			// 合并所有值到node节点
+			if !mergeValues(dataModel, tab, file) {
+				return false
+			}
 
-			// 电子表格数据导出到Table对象
-			if !mergeFile.ExportData(dataModel, file.Header) {
+			// 整合类型信息和数据
+			if !g.AddContent(tab) {
 				return false
 			}
 		}
 
-		// 合并所有值到node节点
-		if !mergeValues(dataModel, tab, file) {
-			return false
-		}
-
-		// 整合类型信息和数据
-		if !g.AddContent(tab) {
-			return false
-		}
-
 	}
+
 
 	// 根据各种导出类型, 调用各导出器导出
 	return g.Print()

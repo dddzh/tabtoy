@@ -30,6 +30,7 @@ func NewRecord() *Record {
 type Table struct {
 	LocalFD  *FileDescriptor
 	GlobalFD *FileDescriptor
+	name     string
 	Recs     []*Record
 }
 
@@ -38,7 +39,12 @@ func (self *Table) Add(r *Record) {
 }
 
 func (self *Table) Name() string {
-	return self.LocalFD.Name
+	//return self.LocalFD.Name
+	return self.name
+}
+
+func (self *Table) SetName(n string)  {
+	self.name = n
 }
 
 func NewTable() *Table {
