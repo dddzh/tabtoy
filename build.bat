@@ -1,7 +1,16 @@
+echo("build windows tabtoy")
 go build -o ./tabtoy.exe ./
-rem SET CGO_ENABLED=0
-rem SET GOOS=darwin
-rem SET GOARCH=amd64
-rem go build -o ./tabtoy ./
+
+echo("build mac tabtoy")
+SET CGO_ENABLED=0
+SET GOOS=darwin
+SET GOARCH=amd64
+go build -o ./tabtoy_mac ./
+
+echo("build linux tabtoy")
+SET CGO_ENABLED=0
+SET GOOS=linux
+SET GOARCH=amd64
+go build -o ./tabtoy ./
 
 pause
