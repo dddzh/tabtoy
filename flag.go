@@ -39,4 +39,6 @@ var (
 	paramLuaTabHeader    = flag.String("luatabheader", "", "output string to lua tab header")
 
 	paramGenCSharpBinarySerializeCode = flag.Bool("cs_gensercode", true, "generate c# binary serialize code, default is true")
+
+	paramSheetExportCombine = flag.Bool("sheetExportCombine", false, "combine sheet export one struct, default is false")
 )

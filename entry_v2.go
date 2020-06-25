@@ -30,6 +30,7 @@ func V2Entry() {
 	g.LuaTabHeader = *paramLuaTabHeader
 	g.GenCSSerailizeCode = *paramGenCSharpBinarySerializeCode
 	g.PackageName = *paramPackageName
+	g.SheetExportCombine = *paramSheetExportCombine
 
 	if *paramProtoOut != "" {
 		g.AddOutputType("proto", *paramProtoOut)

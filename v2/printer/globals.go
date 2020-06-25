@@ -19,6 +19,7 @@ type Globals struct {
 	LuaTabHeader       string
 	GenCSSerailizeCode bool
 	PackageName        string
+	SheetExportCombine bool
 
 	Printers []*PrinterContext
 
@@ -122,7 +123,7 @@ func (self *Globals) AddContent(tab *model.Table) bool {
 
 	if _, ok := self.tableByName[tab.Name()]; ok {
 
-		log.Errorf("%s, '%s'", i18n.String(i18n.Globals_TableNameDuplicated), localFD.Name)
+		log.Errorf("%s, '%s'", i18n.String(i18n.Globals_TableNameDuplicated), tab.Name())
 		return false
 	}
 
